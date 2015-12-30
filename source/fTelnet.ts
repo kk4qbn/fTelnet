@@ -231,6 +231,7 @@ class fTelnet {
             this.OnCrtScreenSizeChanged();
 
             // Create the ansi cursor position handler
+            Ansi.onesc0c.on((): void => { this.OnAnsiESC0c(); });
             Ansi.onesc5n.on((): void => { this.OnAnsiESC5n(); });
             Ansi.onesc6n.on((): void => { this.OnAnsiESC6n(); });
             Ansi.onesc255n.on((): void => { this.OnAnsiESC255n(); });
@@ -540,6 +541,11 @@ class fTelnet {
         if ((this._Connection !== null) && (this._Connection.connected)) {
             this._Connection.LocalEcho = value;
         }
+    }
+
+    private static OnAnsiESC0c(): void {
+        // Respond with 'ftelnet'
+        this._Connection.writeSTring('\x1B[102;116;101;108;110;101;116c');
     }
 
     private static OnAnsiESC5n(): void {

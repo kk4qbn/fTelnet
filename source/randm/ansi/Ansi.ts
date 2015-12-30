@@ -22,6 +22,7 @@
 /// <reference path='../actionscript/Point.ts' />
 class Ansi {
     // Events
+    public static onesc0c: IEvent = new TypedEvent();
     public static onesc5n: IEvent = new TypedEvent();
     public static onesc6n: IEvent = new TypedEvent();
     public static onesc255n: IEvent = new TypedEvent();
@@ -142,7 +143,8 @@ class Ansi {
 	                        one!
 	                        SOURCE: http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-048.pdf */
                 if (this._AnsiParams.length < 1) { this._AnsiParams.push('0'); }
-                console.log('Unhandled ESC sequence: Device Attributes');
+                x = parseInt(this._AnsiParams.shift(), 10);
+                if (x === 0) { this.onesc0c.trigger(); }
                 break;
             case 'D':
                 if (this._AnsiIntermediates.length === 0) {
